@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Risk Assessment - MediAI</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern_style.css') }}">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top modern-navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}" data-aos="fade-right">
+                <i class="bi bi-heart-pulse me-2"></i>MediAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('diabetes') }}">Diabetes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('heart') }}">Heart Disease</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('cancer') }}">Breast Cancer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('chatbot_page') }}">AI Assistant</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="hero-icon mb-4">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h1 class="hero-title fw-bold mb-4">
+                        Breast Cancer<br>
+                        <span class="text-gradient">Classification</span>
+                    </h1>
+                    <p class="hero-subtitle mb-5">
+                        Get an accurate tumor classification using advanced machine learning algorithms. 
+                        Our system analyzes cell characteristics to determine if a tumor is benign or malignant.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="stat-number">98%+</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">Parameters</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number">Medical</div>
+                                <div class="stat-label">Grade</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="hero-visual">
+                        <div class="floating-card card-1">
+                            <i class="bi bi-circle"></i>
+                            <span>Cell Radius</span>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="bi bi-grid-3x3"></i>
+                            <span>Texture</span>
+                        </div>
+                        <div class="floating-card card-3">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Perimeter</span>
+                        </div>
+                        <div class="ai-brain">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prediction Form Section -->
+    <section class="py-5 prediction-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="prediction-form" data-aos="fade-up">
+                        <div class="form-header text-center mb-5">
+                            <h2 class="form-title">Enter Tumor Characteristics</h2>
+                            <p class="form-subtitle">Please provide accurate cell measurements for the best classification results</p>
+                        </div>
+
+                        <form id="cancerForm" class="needs-validation" novalidate>
+                            <div class="row g-4">
+                                <!-- Mean Radius -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mean_radius" class="form-label">
+                                            <i class="bi bi-circle me-2"></i>Mean Radius (mm)
+                                        </label>
+                                        <input type="number" class="form-control" id="mean_radius" name="mean_radius" 
+                                               min="6.0" max="30.0" step="0.01" required>
+                                        <div class="form-text">Average radius of the cells (6.0 - 30.0 mm)</div>
+                                        <div class="invalid-feedback">Please enter a valid radius (6.0 - 30.0)</div>
+                                    </div>
+                                </div>
+
+                                <!-- Mean Texture -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mean_texture" class="form-label">
+                                            <i class="bi bi-grid-3x3 me-2"></i>Mean Texture
+                                        </label>
+                                        <input type="number" class="form-control" id="mean_texture" name="mean_texture" 
+                                               min="9.0" max="40.0" step="0.01" required>
+                                        <div class="form-text">Standard deviation of gray-scale values (9.0 - 40.0)</div>
+                                        <div class="invalid-feedback">Please enter a valid texture (9.0 - 40.0)</div>
+                                    </div>
+                                </div>
+
+                                <!-- Mean Perimeter -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mean_perimeter" class="form-label">
+                                            <i class="bi bi-shield me-2"></i>Mean Perimeter (mm)
+                                        </label>
+                                        <input type="number" class="form-control" id="mean_perimeter" name="mean_perimeter" 
+                                               min="43.0" max="190.0" step="0.01" required>
+                                        <div class="form-text">Average size of tumor boundary (43.0 - 190.0 mm)</div>
+                                        <div class="invalid-feedback">Please enter a valid perimeter (43.0 - 190.0)</div>
+                                    </div>
+                                </div>
+
+                                <!-- Mean Area -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mean_area" class="form-label">
+                                            <i class="bi bi-square me-2"></i>Mean Area (mm²)
+                                        </label>
+                                        <input type="number" class="form-control" id="mean_area" name="mean_area" 
+                                               min="140.0" max="2500.0" step="0.01" required>
+                                        <div class="form-text">Average area of the cells (140.0 - 2500.0 mm²)</div>
+                                        <div class="invalid-feedback">Please enter a valid area (140.0 - 2500.0)</div>
+                                    </div>
+                                </div>
+
+                                <!-- Mean Smoothness -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="mean_smoothness" class="form-label">
+                                            <i class="bi bi-smooth me-2"></i>Mean Smoothness
+                                        </label>
+                                        <input type="number" class="form-control" id="mean_smoothness" name="mean_smoothness" 
+                                               min="0.05" max="0.16" step="0.001" required>
+                                        <div class="form-text">Variation in radius length (0.05 - 0.16)</div>
+                                        <div class="invalid-feedback">Please enter a valid smoothness (0.05 - 0.16)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions text-center mt-5">
+                                <button type="submit" class="btn btn-primary btn-lg me-3" id="predictBtn">
+                                    <i class="bi bi-play-circle me-2"></i>Classify Tumor
+                                </button>
+                                <button type="reset" class="btn btn-outline-light btn-lg">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Reset Form
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-5 results-section" style="display: none;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="results-card" data-aos="fade-up">
+                        <div class="results-header text-center mb-4">
+                            <h3 class="results-title">Classification Results</h3>
+                        </div>
+                        <div class="results-content">
+                            <div class="prediction-result text-center mb-4">
+                                <div class="result-icon">
+                                    <i class="bi bi-check-circle" id="resultIcon"></i>
+                                </div>
+                                <h4 class="result-text" id="resultText"></h4>
+                                <div class="confidence-score" id="confidenceScore"></div>
+                            </div>
+                            <div class="risk-analysis" id="riskAnalysis"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Information Section -->
+    <section class="py-5 info-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h3 class="info-title">Understanding Breast Cancer</h3>
+                    <p class="info-text">
+                        Breast cancer is one of the most common cancers in women. Early detection through 
+                        regular screening and self-examination can significantly improve treatment outcomes.
+                    </p>
+                    <div class="info-features">
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle"></i>
+                            <span>Benign Tumors: Non-cancerous, safe</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle"></i>
+                            <span>Malignant Tumors: Cancerous, requires treatment</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle"></i>
+                            <span>Early Detection: Improves survival rates</span>
+                        </div>
+                </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <h3 class="info-title">Risk Factors</h3>
+                    <ul class="risk-factors">
+                        <li>Age (risk increases with age)</li>
+                        <li>Family history of breast cancer</li>
+                        <li>Genetic mutations (BRCA1, BRCA2)</li>
+                        <li>Previous breast cancer diagnosis</li>
+                        <li>Dense breast tissue</li>
+                        <li>Hormonal factors</li>
+                        <li>Lifestyle factors (alcohol, smoking)</li>
+                        <li>Radiation exposure</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            event.preventDefault();
+                            handleFormSubmission();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Handle form submission
+        function handleFormSubmission() {
+            const form = document.getElementById('cancerForm');
+            const predictBtn = document.getElementById('predictBtn');
+            
+            // Collect form data
+            const formData = {
+                mean_radius: parseFloat(document.getElementById('mean_radius').value) || 0,
+                mean_texture: parseFloat(document.getElementById('mean_texture').value) || 0,
+                mean_perimeter: parseFloat(document.getElementById('mean_perimeter').value) || 0,
+                mean_area: parseFloat(document.getElementById('mean_area').value) || 0,
+                mean_smoothness: parseFloat(document.getElementById('mean_smoothness').value) || 0
+            };
+            
+            // Show loading state
+            predictBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Analyzing...';
+            predictBtn.disabled = true;
+            
+            // Send prediction request
+            fetch('/predict_cancer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    displayResults(data);
+                } else {
+                    showError(data.error || 'An error occurred');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('Network error. Please try again.');
+            })
+            .finally(() => {
+                // Reset button
+                predictBtn.innerHTML = '<i class="bi bi-play-circle me-2"></i>Classify Tumor';
+                predictBtn.disabled = false;
+            });
+        }
+
+        // Display results
+        function displayResults(data) {
+            const resultsSection = document.getElementById('results');
+            const resultText = document.getElementById('resultText');
+            const resultIcon = document.getElementById('resultIcon');
+            const confidenceScore = document.getElementById('confidenceScore');
+            const riskAnalysis = document.getElementById('riskAnalysis');
+            
+            // Update result text
+            resultText.textContent = data.prediction;
+            confidenceScore.textContent = `Confidence: ${data.confidence.toFixed(1)}%`;
+            
+            // Update icon and styling based on prediction
+            if (data.prediction === 'Malignant') {
+                resultIcon.className = 'bi bi-exclamation-triangle';
+                resultIcon.parentElement.className = 'result-icon high-risk';
+                resultText.className = 'result-text high-risk';
+            } else {
+                resultIcon.className = 'bi bi-check-circle';
+                resultIcon.parentElement.className = 'result-icon low-risk';
+                resultText.className = 'result-text low-risk';
+            }
+            
+            // Generate risk analysis
+            generateRiskAnalysis(data, riskAnalysis);
+            
+            // Show results section
+            resultsSection.style.display = 'block';
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Generate risk analysis
+        function generateRiskAnalysis(data, container) {
+            const isMalignant = data.prediction === 'Malignant';
+            const confidence = data.confidence;
+            
+            let analysisHTML = '';
+            
+            if (isMalignant) {
+                analysisHTML = `
+                    <div class="risk-analysis-content high-risk">
+                        <h5><i class="bi bi-exclamation-triangle me-2"></i>Malignant Tumor Detected</h5>
+                        <p>Your tumor characteristics suggest a malignant (cancerous) tumor. Please consult with an oncologist immediately for further evaluation and treatment planning.</p>
+                        <div class="recommendations">
+                            <h6>Immediate Actions:</h6>
+                            <ul>
+                                <li>Consult an oncologist immediately</li>
+                <li>Get additional imaging tests (CT, MRI, PET scan)</li>
+                <li>Consider getting a biopsy for confirmation</li>
+                                <li>Discuss treatment options with your medical team</li>
+                <li>Seek support from family, friends, and support groups</li>
+            </ul>
+                        </div>
+                    </div>
+                `;
+            } else {
+                analysisHTML = `
+                    <div class="risk-analysis-content low-risk">
+                        <h5><i class="bi bi-check-circle me-2"></i>Benign Tumor</h5>
+                        <p>Your tumor characteristics suggest a benign (non-cancerous) tumor. This is generally not life-threatening, but regular monitoring is still recommended.</p>
+                        <div class="recommendations">
+                            <h6>Follow-up Care:</h6>
+                            <ul>
+                                <li>Continue regular breast self-examinations</li>
+                                <li>Schedule routine mammograms as recommended</li>
+                                <li>Maintain a healthy lifestyle with regular exercise</li>
+                                <li>Monitor for any changes in size, shape, or symptoms</li>
+                                <li>Follow your doctor's recommendations for monitoring</li>
+            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = analysisHTML;
+        }
+
+        // Show error message
+        function showError(message) {
+            alert('Error: ' + message);
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+
+    <style>
+        /* Additional styles for the breast cancer page */
+        .hero-icon {
+            font-size: 4rem;
+            color: var(--warning-color);
+        }
+
+        .prediction-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .prediction-form {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .form-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(240, 147, 251, 0.25);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .results-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .results-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-icon.low-risk {
+            color: var(--success-color);
+        }
+
+        .result-icon.high-risk {
+            color: var(--danger-color);
+        }
+
+        .result-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .result-text.low-risk {
+            color: var(--success-color);
+        }
+
+        .result-text.high-risk {
+            color: var(--danger-color);
+        }
+
+        .confidence-score {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .risk-analysis-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+        }
+
+        .risk-analysis-content h5 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .risk-analysis-content h6 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .risk-analysis-content p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .risk-analysis-content ul {
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 1.5rem;
+        }
+
+        .risk-analysis-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-text {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .info-features {
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item i {
+            color: var(--accent-color);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .risk-factors {
+            list-style: none;
+            padding: 0;
+        }
+
+        .risk-factors li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .risk-factors li:before {
+            content: "•";
+            color: var(--accent-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+</body>
+</html>

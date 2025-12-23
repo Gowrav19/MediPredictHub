@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Health Assistant - MediAI</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern_style.css') }}">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top modern-navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}" data-aos="fade-right">
+                <i class="bi bi-heart-pulse me-2"></i>MediAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('diabetes') }}">Diabetes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('heart') }}">Heart Disease</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('cancer') }}">Breast Cancer</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('chatbot_page') }}">AI Assistant</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-8 mx-auto text-center" data-aos="fade-up">
+                    <div class="hero-icon mb-4">
+                        <i class="bi bi-robot text-primary"></i>
+                    </div>
+                    <h1 class="hero-title mb-4">
+                        AI Health <span class="text-primary">Assistant</span>
+                    </h1>
+                    <p class="hero-subtitle mb-4">
+                        Get instant answers to your health questions with our intelligent AI assistant. 
+                        Ask about symptoms, get health tips, and receive personalized guidance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Interface Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="chat-container modern-card" data-aos="fade-up">
+                        <div class="chat-header">
+                            <div class="d-flex align-items-center">
+                                <div class="chat-avatar me-3">
+                                    <i class="bi bi-robot"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">MediAI Assistant</h5>
+                                    <span class="status-indicator">
+                                        <span class="status-dot"></span>
+                                        Online
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message bot-message">
+                                <div class="message-content">
+                                    <p>Hello! I'm your AI Health Assistant. I can help you with:</p>
+                                    <ul class="mb-0">
+                                        <li>Health questions and concerns</li>
+                                        <li>Symptom analysis and guidance</li>
+                                        <li>Health tips and recommendations</li>
+                                        <li>General medical information</li>
+                                    </ul>
+                                    <p class="mt-2">How can I assist you today?</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="typing-indicator" id="typingIndicator">
+                            <div class="d-flex align-items-center">
+                                <div class="typing-dots me-2"></div>
+                                <span>AI is typing...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <div class="quick-actions mb-3">
+                                <button class="quick-btn" onclick="sendQuickMessage('What are the symptoms of diabetes?')">
+                                    <i class="bi bi-question-circle me-1"></i>Diabetes Symptoms
+                                </button>
+                                <button class="quick-btn" onclick="sendQuickMessage('How to maintain heart health?')">
+                                    <i class="bi bi-heart me-1"></i>Heart Health
+                                </button>
+                                <button class="quick-btn" onclick="sendQuickMessage('What are healthy lifestyle tips?')">
+                                    <i class="bi bi-dumbbell me-1"></i>Healthy Lifestyle
+                                </button>
+                                <button class="quick-btn" onclick="sendQuickMessage('When should I see a doctor?')">
+                                    <i class="bi bi-person-check me-1"></i>When to See Doctor
+                                </button>
+                            </div>
+                            
+                            <div class="input-group">
+                                <input type="text" class="form-control modern-input" id="messageInput" 
+                                       placeholder="Type your health question here..." 
+                                       onkeypress="handleKeyPress(event)">
+                                <button class="btn btn-primary modern-btn" onclick="sendMessage()">
+                                    <i class="bi bi-send"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">AI Assistant Features</h2>
+                    <p class="section-subtitle">Powered by advanced AI technology for accurate health guidance</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-brain"></i>
+                        </div>
+                        <h5>AI-Powered</h5>
+                        <p>Advanced AI technology provides accurate health insights and personalized recommendations</p>
+                        <div class="feature-badge">Smart</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5>Privacy Protected</h5>
+                        <p>Your conversations are secure and private. We don't store personal health information</p>
+                        <div class="feature-badge">Secure</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <h5>24/7 Available</h5>
+                        <p>Get instant health guidance anytime, anywhere. No appointment needed</p>
+                        <div class="feature-badge">Always On</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <h5>Educational</h5>
+                        <p>Learn about health conditions, prevention, and wellness through interactive conversations</p>
+                        <div class="feature-badge">Learn</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-chat-dots"></i>
+                        </div>
+                        <h5>Interactive</h5>
+                        <p>Engage in natural conversations with our intelligent health assistant</p>
+                        <div class="feature-badge">Chat</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning"></i>
+                        </div>
+                        <h5>Instant Response</h5>
+                        <p>Get immediate answers to your health questions without waiting</p>
+                        <div class="feature-badge">Fast</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Health Tips Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">Quick Health Tips</h2>
+                    <p class="section-subtitle">Ask our AI assistant about these common health topics</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="health-tip-card modern-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+                        <h6>Heart Health</h6>
+                        <p>Ask about cardiovascular health, blood pressure, and heart disease prevention</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="health-tip-card modern-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-droplet"></i>
+                        </div>
+                        <h6>Diabetes Care</h6>
+                        <p>Get guidance on blood sugar management and diabetes prevention</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="health-tip-card modern-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-shield-exclamation"></i>
+                        </div>
+                        <h6>Cancer Prevention</h6>
+                        <p>Learn about early detection and cancer prevention strategies</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="health-tip-card modern-card">
+                        <div class="tip-icon">
+                            <i class="bi bi-dumbbell"></i>
+                        </div>
+                        <h6>Lifestyle</h6>
+                        <p>Get advice on exercise, nutrition, and healthy living habits</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer-brand">
+                        <h5><i class="bi bi-heart-pulse me-2"></i>MediAI</h5>
+                        <p>Advanced AI-powered medical diagnosis system for accurate health predictions and personalized healthcare guidance.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Health Tools</h6>
+                    <ul class="footer-links">
+                        <li><a href="/diabetes">Diabetes</a></li>
+                        <li><a href="/heart">Heart Disease</a></li>
+                        <li><a href="/cancer">Breast Cancer</a></li>
+                        <li><a href="{{ url_for('chatbot_page') }}">AI Assistant</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Resources</h6>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#help">Help Center</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h6 class="footer-title">Contact Info</h6>
+                    <div class="contact-info">
+                        <p><i class="bi bi-envelope me-2"></i>support@mediai.com</p>
+                        <p><i class="bi bi-phone me-2"></i>+1 (555) 123-4567</p>
+                        <p><i class="bi bi-geo-alt me-2"></i>123 Health St, Medical City</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="footer-divider">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="footer-copyright">&copy; 2024 MediAI. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Chat functionality
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage(message, 'user');
+                input.value = '';
+                showTypingIndicator();
+                
+                // Send to backend
+                fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideTypingIndicator();
+                    addMessage(data.response, 'bot');
+                })
+                .catch(error => {
+                    hideTypingIndicator();
+                    addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('messageInput').value = message;
+            sendMessage();
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-content';
+            bubbleDiv.innerHTML = `<p>${text}</p>`;
+            
+            messageDiv.appendChild(bubbleDiv);
+            messagesContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'block';
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Auto-focus on input
+        document.getElementById('messageInput').focus();
+    </script>
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAI - Advanced Medical Diagnosis System</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern_style.css') }}">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top modern-navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#" data-aos="fade-right">
+                <i class="bi bi-heart-pulse me-2"></i>MediAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#predictions">Predictions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#chatbot">AI Assistant</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h1 class="hero-title mb-4">
+                        Advanced <span class="text-primary">AI-Powered</span> Medical Diagnosis
+                    </h1>
+                    <p class="hero-subtitle mb-4">
+                        Get accurate health predictions using cutting-edge machine learning algorithms. 
+                        Our advanced AI system provides reliable medical insights for diabetes, heart disease, and breast cancer detection.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#predictions" class="btn btn-primary btn-lg me-3">
+                            <i class="bi bi-play-circle me-2"></i>Start Diagnosis
+                        </a>
+                        <a href="#about" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-info-circle me-2"></i>Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="hero-image">
+                        <div class="floating-card">
+                            <i class="bi bi-activity text-primary"></i>
+                            <h5>Real-time Analysis</h5>
+                            <p>Instant health predictions</p>
+                        </div>
+                        <div class="floating-card">
+                            <i class="bi bi-shield-check text-success"></i>
+                            <h5>99.2% Accuracy</h5>
+                            <p>Advanced ML models</p>
+                        </div>
+                        <div class="floating-card">
+                            <i class="bi bi-graph-up text-warning"></i>
+                            <h5>Smart Insights</h5>
+                            <p>Detailed risk analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-5 bg-gradient-primary text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <h2 class="mb-3">Ready to Get Started?</h2>
+                    <p class="lead mb-4">
+                        Take control of your health with our advanced AI-powered medical diagnosis system. 
+                        Get instant, accurate predictions and personalized health insights.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#predictions" class="btn btn-light btn-lg">
+                            <i class="bi bi-play-circle me-2"></i>Start Diagnosis
+                        </a>
+                        <a href="#chatbot" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-robot me-2"></i>Ask AI Assistant
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center" data-aos="fade-left">
+                    <div class="cta-stats">
+                        <div class="stat-item">
+                            <h3 class="display-4 fw-bold">99.2%</h3>
+                            <p class="mb-0">Accuracy Rate</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 class="display-4 fw-bold">3</h3>
+                            <p class="mb-0">Health Conditions</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 class="display-4 fw-bold">24/7</h3>
+                            <p class="mb-0">Available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Health Tips Section -->
+    <section id="health-tips" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">💡 Quick Health Tips</h2>
+                    <p class="health-tips-description">Simple tips to maintain your health and well-being</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for tip in health_tips %}
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                    <div class="health-tip-card">
+                        <div class="tip-icon">
+                            <span class="tip-emoji">{{ tip.icon }}</span>
+                        </div>
+                        <h5 class="tip-title">{{ tip.title }}</h5>
+                        <p class="tip-description">{{ tip.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">About MediAI</h2>
+                    <p class="about-description">
+                        An advanced medical diagnosis system powered by cutting-edge machine learning algorithms. 
+                        Our platform provides accurate predictions for diabetes, heart disease, and breast cancer detection.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- About Features Grid -->
+            <div class="row mb-5">
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="about-feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+                        <h5>Advanced AI Models</h5>
+                        <p>State-of-the-art machine learning algorithms for accurate predictions</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="about-feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning"></i>
+                        </div>
+                        <h5>Real-time Predictions</h5>
+                        <p>Get instant health predictions with our advanced AI models</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="about-feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h5>Risk Analysis</h5>
+                        <p>Detailed risk assessment and confidence scores for each prediction</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="about-feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-download"></i>
+                        </div>
+                        <h5>Export Reports</h5>
+                        <p>Download detailed reports in PDF, Excel, or CSV formats</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="stats-container" data-aos="fade-up" data-aos-delay="500">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-robot"></i>
+                                    </div>
+                                    <h3 class="stat-number">{{ model_stats.total_models }}</h3>
+                                    <p class="stat-label">AI Models</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-gear"></i>
+                                    </div>
+                                    <h3 class="stat-number">{{ model_stats.advanced_models }}</h3>
+                                    <p class="stat-label">Advanced Models</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-shield-check"></i>
+                                    </div>
+                                    <h3 class="stat-number">99.2%</h3>
+                                    <p class="stat-label">Accuracy Rate</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-clock"></i>
+                                    </div>
+                                    <h3 class="stat-number">24/7</h3>
+                                    <p class="stat-label">Available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">Key Features</h2>
+                    <p class="features-description">Comprehensive health analysis tools at your fingertips</p>
+                </div>
+            </div>
+            
+            <!-- AI & Technology Features -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h4 class="feature-category-title" data-aos="fade-up">🤖 AI & Technology</h4>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-activity"></i>
+                        </div>
+                        <h5>Real-time Analysis</h5>
+                        <p>Get instant health predictions with our advanced AI models</p>
+                        <div class="feature-badge">AI Powered</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5>High Accuracy</h5>
+                        <p>99.2% accuracy rate with advanced machine learning algorithms</p>
+                        <div class="feature-badge">99.2% Accurate</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h5>Risk Analysis</h5>
+                        <p>Detailed risk assessment and confidence scores</p>
+                        <div class="feature-badge">Advanced</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data & Security Features -->
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="feature-category-title" data-aos="fade-up">🔒 Data & Security</h4>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <h5>Privacy Protected</h5>
+                        <p>Your data is secure and encrypted with enterprise-grade security</p>
+                        <div class="feature-badge">Secure</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-download"></i>
+                        </div>
+                        <h5>Export Reports</h5>
+                        <p>Download detailed reports in PDF, Excel, or CSV format</p>
+                        <div class="feature-badge">Multi-Format</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="feature-card modern-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-cloud-check"></i>
+                        </div>
+                        <h5>Cloud Storage</h5>
+                        <p>Secure cloud storage for your health reports and data</p>
+                        <div class="feature-badge">Cloud Based</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictions Section -->
+    <section id="predictions" class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">Health Predictions</h2>
+                    <p class="predictions-description">Choose the type of health analysis you need</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="prediction-card modern-card">
+                        <div class="prediction-icon">
+                            <i class="bi bi-droplet"></i>
+                        </div>
+                        <h5>Diabetes Prediction</h5>
+                        <p>Analyze your risk of diabetes based on health parameters</p>
+                        <div class="prediction-features">
+                            <span class="feature-tag">Blood Sugar</span>
+                            <span class="feature-tag">BMI Analysis</span>
+                            <span class="feature-tag">Family History</span>
+                        </div>
+                        <a href="/diabetes" class="btn btn-primary modern-btn">
+                            <i class="bi bi-arrow-right me-2"></i>Start Analysis
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="prediction-card modern-card">
+                        <div class="prediction-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+                        <h5>Heart Disease</h5>
+                        <p>Assess your cardiovascular health and risk factors</p>
+                        <div class="prediction-features">
+                            <span class="feature-tag">Blood Pressure</span>
+                            <span class="feature-tag">Cholesterol</span>
+                            <span class="feature-tag">ECG Analysis</span>
+                        </div>
+                        <a href="/heart" class="btn btn-primary modern-btn">
+                            <i class="bi bi-arrow-right me-2"></i>Start Analysis
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="prediction-card modern-card">
+                        <div class="prediction-icon">
+                            <i class="bi bi-shield-exclamation"></i>
+                        </div>
+                        <h5>Breast Cancer</h5>
+                        <p>Early detection and risk assessment for breast cancer</p>
+                        <div class="prediction-features">
+                            <span class="feature-tag">Tumor Analysis</span>
+                            <span class="feature-tag">Cell Structure</span>
+                            <span class="feature-tag">Risk Factors</span>
+                        </div>
+                        <a href="/cancer" class="btn btn-primary modern-btn">
+                            <i class="bi bi-arrow-right me-2"></i>Start Analysis
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Contacts Section -->
+    <section id="emergency" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5" data-aos="fade-up">
+                    <h2 class="section-title">🚨 Emergency Contacts</h2>
+                    <p class="section-subtitle">Important emergency numbers for immediate assistance</p>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for contact in emergency_contacts %}
+                <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                    <div class="emergency-card">
+                        <div class="emergency-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <h5 class="emergency-name">{{ contact.name }}</h5>
+                        <p class="emergency-number">{{ contact.number }}</p>
+                        <p class="emergency-description">{{ contact.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-brand">
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-heart-pulse me-2"></i>MediAI
+                        </h5>
+                        <p class="text-muted">
+                            Advanced AI-powered medical diagnosis system providing accurate health predictions 
+                            and comprehensive risk analysis.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="bi bi-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Quick Links</h6>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#predictions">Predictions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Health Tools</h6>
+                    <ul class="footer-links">
+                        <li><a href="/diabetes">Diabetes</a></li>
+                        <li><a href="/heart">Heart Disease</a></li>
+                        <li><a href="/cancer">Breast Cancer</a></li>
+                        <li><a href="/chatbot">AI Assistant</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Resources</h6>
+                    <ul class="footer-links">
+                        <li><a href="#health-tips">Health Tips</a></li>
+                        <li><a href="#emergency">Emergency</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Contact</h6>
+                    <ul class="footer-links">
+                        <li><i class="bi bi-envelope me-2"></i>info@mediai.com</li>
+                        <li><i class="bi bi-telephone me-2"></i>1800277890</li>
+                        <li><i class="bi bi-geo-alt me-2"></i>Telangana,In</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="footer-divider">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="footer-copyright mb-0">
+                        &copy; 2024 MediAI. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="footer-disclaimer mb-0">
+                        <small class="text-muted">
+                            This system is for educational purposes only. Consult healthcare professionals for medical advice.
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background change on scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

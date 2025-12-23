@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Risk Assessment - MediAI</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern_style.css') }}">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top modern-navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}" data-aos="fade-right">
+                <i class="bi bi-heart-pulse me-2"></i>MediAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('diabetes') }}">Diabetes</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('heart') }}">Heart Disease</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('cancer') }}">Breast Cancer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('chatbot_page') }}">AI Assistant</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="hero-icon mb-4">
+                        <i class="bi bi-heart-pulse"></i>
+                    </div>
+                    <h1 class="hero-title fw-bold mb-4">
+                        Heart Disease Risk<br>
+                        <span class="text-gradient">Assessment</span>
+                    </h1>
+                    <p class="hero-subtitle mb-5">
+                        Get an accurate cardiovascular risk assessment using advanced machine learning algorithms. 
+                        Our system analyzes 18+ health parameters to provide early detection and prevention insights.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="stat-number">95%+</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number">18</div>
+                                <div class="stat-label">Parameters</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number">Instant</div>
+                                <div class="stat-label">Results</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="hero-visual">
+                        <div class="floating-card card-1">
+                            <i class="bi bi-heart"></i>
+                            <span>Heart Health</span>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="bi bi-activity"></i>
+                            <span>Blood Pressure</span>
+                        </div>
+                        <div class="floating-card card-3">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Risk Factors</span>
+                        </div>
+                        <div class="ai-brain">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prediction Form Section -->
+    <section class="py-5 prediction-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="prediction-form" data-aos="fade-up">
+                        <div class="form-header text-center mb-5">
+                            <h2 class="form-title">Enter Your Health Information</h2>
+                            <p class="form-subtitle">Please provide accurate information for the best prediction results. Enter 0 for No and 1 for Yes for most fields.</p>
+                        </div>
+
+                        <form id="heartForm" class="needs-validation" novalidate>
+                            <div class="row g-4">
+                                <!-- Symptoms Section -->
+                                <div class="col-12">
+                                    <h4 class="section-title mb-4">Symptoms (0 = No, 1 = Yes)</h4>
+                                </div>
+                                
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="chest_pain" class="form-label">
+                                            <i class="bi bi-heart me-2"></i>Chest Pain
+                                        </label>
+                                        <select class="form-control" id="chest_pain" name="chest_pain" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="shortness_of_breath" class="form-label">
+                                            <i class="bi bi-wind me-2"></i>Shortness of Breath
+                                        </label>
+                                        <select class="form-control" id="shortness_of_breath" name="shortness_of_breath" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="fatigue" class="form-label">
+                                            <i class="bi bi-battery-half me-2"></i>Fatigue
+                                        </label>
+                                        <select class="form-control" id="fatigue" name="fatigue" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="palpitations" class="form-label">
+                                            <i class="bi bi-heart-pulse me-2"></i>Palpitations
+                                        </label>
+                                        <select class="form-control" id="palpitations" name="palpitations" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="dizziness" class="form-label">
+                                            <i class="bi bi-arrow-clockwise me-2"></i>Dizziness
+                                        </label>
+                                        <select class="form-control" id="dizziness" name="dizziness" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="swelling" class="form-label">
+                                            <i class="bi bi-droplet me-2"></i>Swelling
+                                        </label>
+                                        <select class="form-control" id="swelling" name="swelling" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="pain_arms_jaw_back" class="form-label">
+                                            <i class="bi bi-arrow-right me-2"></i>Pain in Arms/Jaw/Back
+                                        </label>
+                                        <select class="form-control" id="pain_arms_jaw_back" name="pain_arms_jaw_back" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="cold_sweats_nausea" class="form-label">
+                                            <i class="bi bi-thermometer me-2"></i>Cold Sweats/Nausea
+                                        </label>
+                                        <select class="form-control" id="cold_sweats_nausea" name="cold_sweats_nausea" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <!-- Risk Factors Section -->
+                                <div class="col-12 mt-4">
+                                    <h4 class="section-title mb-4">Risk Factors (0 = No, 1 = Yes)</h4>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="high_bp" class="form-label">
+                                            <i class="bi bi-heart-pulse me-2"></i>High Blood Pressure
+                                        </label>
+                                        <select class="form-control" id="high_bp" name="high_bp" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">Normal</option>
+                                            <option value="1">High BP</option>
+                                        </select>
+                                        <div class="form-text">BP > 140/90 mmHg</div>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="high_cholesterol" class="form-label">
+                                            <i class="bi bi-droplet me-2"></i>High Cholesterol
+                                        </label>
+                                        <select class="form-control" id="high_cholesterol" name="high_cholesterol" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">Normal</option>
+                                            <option value="1">High</option>
+                                        </select>
+                                        <div class="form-text">Total cholesterol > 240 mg/dL</div>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="diabetes" class="form-label">
+                                            <i class="bi bi-activity me-2"></i>Diabetes
+                                        </label>
+                                        <select class="form-control" id="diabetes" name="diabetes" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="smoking" class="form-label">
+                                            <i class="bi bi-fire me-2"></i>Smoking
+                                        </label>
+                                        <select class="form-control" id="smoking" name="smoking" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">Non-smoker</option>
+                                            <option value="1">Smoker</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="obesity" class="form-label">
+                                            <i class="bi bi-speedometer me-2"></i>Obesity
+                                        </label>
+                                        <select class="form-control" id="obesity" name="obesity" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">Normal Weight</option>
+                                            <option value="1">Overweight/Obese</option>
+                                        </select>
+                                        <div class="form-text">BMI > 30 kg/m²</div>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="sedentary_lifestyle" class="form-label">
+                                            <i class="bi bi-person-walking me-2"></i>Sedentary Lifestyle
+                                        </label>
+                                        <select class="form-control" id="sedentary_lifestyle" name="sedentary_lifestyle" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">Active</option>
+                                            <option value="1">Inactive</option>
+                                        </select>
+                                        <div class="form-text">Less than 150 min exercise/week</div>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="family_history" class="form-label">
+                                            <i class="bi bi-people me-2"></i>Family History
+                                        </label>
+                                        <select class="form-control" id="family_history" name="family_history" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                        <div class="form-text">Heart disease in immediate family</div>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="chronic_stress" class="form-label">
+                                            <i class="bi bi-emoji-frown me-2"></i>Chronic Stress
+                                        </label>
+                                        <select class="form-control" id="chronic_stress" name="chronic_stress" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">Low Stress</option>
+                                            <option value="1">High Stress</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <!-- Demographics Section -->
+                                <div class="col-12 mt-4">
+                                    <h4 class="section-title mb-4">Demographics</h4>
+                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="gender" class="form-label">
+                                            <i class="bi bi-person me-2"></i>Gender
+                                        </label>
+                                        <select class="form-control" id="gender" name="gender" required>
+                                            <option value="">Select...</option>
+                                            <option value="0">Female</option>
+                                            <option value="1">Male</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select an option</div>
+                                    </div>
+                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="age" class="form-label">
+                                            <i class="bi bi-calendar me-2"></i>Age (years)
+                                        </label>
+                                        <input type="number" class="form-control" id="age" name="age" 
+                                               min="1" max="120" required>
+                                        <div class="form-text">Your current age</div>
+                                        <div class="invalid-feedback">Please enter a valid age (1-120)</div>
+                                    </div>
+                                </div>
+                </div>
+
+                            <div class="form-actions text-center mt-5">
+                                <button type="submit" class="btn btn-primary btn-lg me-3" id="predictBtn">
+                                    <i class="bi bi-play-circle me-2"></i>Get Prediction
+                                </button>
+                                <button type="reset" class="btn btn-outline-light btn-lg">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Reset Form
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-5 results-section" style="display: none;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="results-card" data-aos="fade-up">
+                        <div class="results-header text-center mb-4">
+                            <h3 class="results-title">Prediction Results</h3>
+                        </div>
+                        <div class="results-content">
+                            <div class="prediction-result text-center mb-4">
+                                <div class="result-icon">
+                                    <i class="bi bi-check-circle" id="resultIcon"></i>
+                                </div>
+                                <h4 class="result-text" id="resultText"></h4>
+                                <div class="confidence-score" id="confidenceScore"></div>
+                            </div>
+                            <div class="risk-analysis" id="riskAnalysis"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Information Section -->
+    <section class="py-5 info-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h3 class="info-title">Understanding Heart Disease Risk</h3>
+                    <p class="info-text">
+                        Heart disease is the leading cause of death worldwide. Early detection and prevention 
+                        can significantly reduce your risk of cardiovascular complications.
+                    </p>
+                    <div class="info-features">
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle"></i>
+                            <span>Coronary Artery Disease: Blocked arteries</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle"></i>
+                            <span>Heart Failure: Weakened heart muscle</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-check-circle"></i>
+                            <span>Arrhythmia: Irregular heartbeat</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <h3 class="info-title">Risk Factors</h3>
+                    <ul class="risk-factors">
+                        <li>Age (men ≥45, women ≥55)</li>
+                        <li>Family history of heart disease</li>
+                        <li>High blood pressure (≥140/90)</li>
+                        <li>High cholesterol (≥240 mg/dL)</li>
+                        <li>Smoking or tobacco use</li>
+                        <li>Diabetes or prediabetes</li>
+                        <li>Obesity (BMI ≥30)</li>
+                        <li>Physical inactivity</li>
+                        <li>Chronic stress</li>
+                        <li>Unhealthy diet</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            event.preventDefault();
+                            handleFormSubmission();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Handle form submission
+        function handleFormSubmission() {
+            const form = document.getElementById('heartForm');
+            const predictBtn = document.getElementById('predictBtn');
+            
+            // Collect form data
+            const formData = {
+                chest_pain: parseFloat(document.getElementById('chest_pain').value) || 0,
+                shortness_of_breath: parseFloat(document.getElementById('shortness_of_breath').value) || 0,
+                fatigue: parseFloat(document.getElementById('fatigue').value) || 0,
+                palpitations: parseFloat(document.getElementById('palpitations').value) || 0,
+                dizziness: parseFloat(document.getElementById('dizziness').value) || 0,
+                swelling: parseFloat(document.getElementById('swelling').value) || 0,
+                pain_arms_jaw_back: parseFloat(document.getElementById('pain_arms_jaw_back').value) || 0,
+                cold_sweats_nausea: parseFloat(document.getElementById('cold_sweats_nausea').value) || 0,
+                high_bp: parseFloat(document.getElementById('high_bp').value) || 0,
+                high_cholesterol: parseFloat(document.getElementById('high_cholesterol').value) || 0,
+                diabetes: parseFloat(document.getElementById('diabetes').value) || 0,
+                smoking: parseFloat(document.getElementById('smoking').value) || 0,
+                obesity: parseFloat(document.getElementById('obesity').value) || 0,
+                sedentary_lifestyle: parseFloat(document.getElementById('sedentary_lifestyle').value) || 0,
+                family_history: parseFloat(document.getElementById('family_history').value) || 0,
+                chronic_stress: parseFloat(document.getElementById('chronic_stress').value) || 0,
+                gender: parseFloat(document.getElementById('gender').value) || 0,
+                age: parseFloat(document.getElementById('age').value) || 0
+            };
+            
+            // Show loading state
+            predictBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Analyzing...';
+            predictBtn.disabled = true;
+            
+            // Send prediction request
+            fetch('/predict_heart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    displayResults(data);
+                } else {
+                    showError(data.error || 'An error occurred');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('Network error. Please try again.');
+            })
+            .finally(() => {
+                // Reset button
+                predictBtn.innerHTML = '<i class="bi bi-play-circle me-2"></i>Get Prediction';
+                predictBtn.disabled = false;
+            });
+        }
+
+        // Display results
+        function displayResults(data) {
+            const resultsSection = document.getElementById('results');
+            const resultText = document.getElementById('resultText');
+            const resultIcon = document.getElementById('resultIcon');
+            const confidenceScore = document.getElementById('confidenceScore');
+            const riskAnalysis = document.getElementById('riskAnalysis');
+            
+            // Update result text
+            resultText.textContent = data.prediction;
+            confidenceScore.textContent = `Confidence: ${data.confidence.toFixed(1)}%`;
+            
+            // Update icon and styling based on prediction
+            if (data.prediction === 'High Risk') {
+                resultIcon.className = 'bi bi-exclamation-triangle';
+                resultIcon.parentElement.className = 'result-icon high-risk';
+                resultText.className = 'result-text high-risk';
+            } else {
+                resultIcon.className = 'bi bi-check-circle';
+                resultIcon.parentElement.className = 'result-icon low-risk';
+                resultText.className = 'result-text low-risk';
+            }
+            
+            // Generate risk analysis
+            generateRiskAnalysis(data, riskAnalysis);
+            
+            // Show results section
+            resultsSection.style.display = 'block';
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Generate risk analysis
+        function generateRiskAnalysis(data, container) {
+            const isHighRisk = data.prediction === 'High Risk';
+            const confidence = data.confidence;
+            
+            let analysisHTML = '';
+            
+            if (isHighRisk) {
+                analysisHTML = `
+                    <div class="risk-analysis-content high-risk">
+                        <h5><i class="bi bi-exclamation-triangle me-2"></i>High Risk Detected</h5>
+                        <p>Your health indicators suggest an elevated risk of heart disease. Please consult with a healthcare professional immediately.</p>
+                        <div class="recommendations">
+                            <h6>Immediate Actions:</h6>
+                            <ul>
+                                <li>Schedule an appointment with a cardiologist</li>
+                                <li>Get comprehensive cardiac tests (ECG, echocardiogram)</li>
+                                <li>Have blood work done (cholesterol, triglycerides)</li>
+                                <li>Start prescribed medications as directed</li>
+                                <li>Begin supervised cardiac rehabilitation</li>
+            </ul>
+        </div>
+        </div>
+                `;
+            } else {
+                analysisHTML = `
+                    <div class="risk-analysis-content low-risk">
+                        <h5><i class="bi bi-check-circle me-2"></i>Low Risk</h5>
+                        <p>Your current health indicators suggest a low risk of heart disease. Continue maintaining your healthy lifestyle.</p>
+                        <div class="recommendations">
+                            <h6>Prevention Tips:</h6>
+                            <ul>
+                                <li>Continue regular cardiovascular exercise</li>
+                                <li>Maintain a heart-healthy diet</li>
+                                <li>Keep blood pressure under 120/80 mmHg</li>
+                                <li>Maintain healthy cholesterol levels</li>
+                                <li>Get regular cardiac check-ups</li>
+            </ul>
+        </div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = analysisHTML;
+        }
+
+        // Show error message
+        function showError(message) {
+            alert('Error: ' + message);
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    </script>
+
+    <style>
+        /* Additional styles for the heart disease page */
+        .hero-icon {
+            font-size: 4rem;
+            color: var(--danger-color);
+        }
+
+        .prediction-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .prediction-form {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .form-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: white;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(240, 147, 251, 0.25);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .results-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .results-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-icon.low-risk {
+            color: var(--success-color);
+        }
+
+        .result-icon.high-risk {
+            color: var(--danger-color);
+        }
+
+        .result-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .result-text.low-risk {
+            color: var(--success-color);
+        }
+
+        .result-text.high-risk {
+            color: var(--danger-color);
+        }
+
+        .confidence-score {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .risk-analysis-content {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+        }
+
+        .risk-analysis-content h5 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .risk-analysis-content h6 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .risk-analysis-content p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .risk-analysis-content ul {
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 1.5rem;
+        }
+
+        .risk-analysis-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-text {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .info-features {
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item i {
+            color: var(--accent-color);
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .risk-factors {
+            list-style: none;
+            padding: 0;
+        }
+
+        .risk-factors li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .risk-factors li:before {
+            content: "•";
+            color: var(--accent-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+    </style>
+</body>
+</html>
