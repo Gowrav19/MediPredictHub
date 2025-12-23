@@ -4,7 +4,7 @@ MediPredictAI is an AI-powered medical prediction system designed to assist in e
 
 This system focuses on accuracy, usability, and scalability, making it suitable for academic projects, research, and real-world healthcare applications.
 
-🚀 Key Features
+🚀 Key Features:
 
 🩺 Predicts potential diseases based on patient health data
 
@@ -18,35 +18,35 @@ This system focuses on accuracy, usability, and scalability, making it suitable 
 
 📈 Supports future model improvements and dataset expansion
 
-🛠️ Technologies Used
+🛠️ Technologies Used :
 
-Python
+->Python
 
-Machine Learning (Scikit-learn / TensorFlow – if applicable)
+->Machine Learning (Scikit-learn / TensorFlow – if applicable)
 
-Flask / Django (if web-based)
+->Flask / Django (if web-based)
 
-HTML, CSS, Bootstrap (frontend)
+->HTML, CSS, Bootstrap (frontend)
 
-Pandas, NumPy, Matplotlib
+->Pandas, NumPy, Matplotlib
 
-Jupyter Notebook / Google Colab (for model training)
+->Jupyter Notebook / Google Colab (for model training)
 
 (Edit this list based on what you actually used)
 
-📌 Project Objective
+📌 Project Objective:
 
 The main objective of MediPredictAI is to leverage artificial intelligence to:
 
-Reduce manual diagnosis effort
+->Reduce manual diagnosis effort
 
-Assist medical professionals with predictive insights
+->Assist medical professionals with predictive insights
 
-Enable early detection of diseases
+->Enable early detection of diseases
 
-Improve decision-making using data-driven models
+->Improve decision-making using data-driven models
 
-📂 Project Structure (Optional)
+📂 Project Structure 
 MediPredictAI/
 │── dataset/
 │── models/
@@ -58,24 +58,24 @@ MediPredictAI/
 
 🧪 How It Works
 
-User enters medical parameters (age, symptoms, test values, etc.)
+->User enters medical parameters (age, symptoms, test values, etc.)
 
-Data is preprocessed and normalized
+->Data is preprocessed and normalized
 
-Trained ML model analyzes the input
+->Trained ML model analyzes the input
 
-System predicts possible medical conditions
+->System predicts possible medical conditions
 
-Results are displayed through the interface
+->Results are displayed through the interface
 
-🎯 Future Enhancements
+🎯 Future Enhancements :
 
-Integration with real-time hospital data
+->Integration with real-time hospital data
 
-More disease prediction models
+->More disease prediction models
 
-Deep Learning implementation
+->Deep Learning implementation
 
-Mobile application support
+->Mobile application support:
 
-Cloud deployment
+->Cloud deployment
