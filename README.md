@@ -96,7 +96,12 @@ MediPredictAI/
 
 ->Nareen– Frontend Development (UI/UX), Backend Integration  
 
+---GitHub: https://github.com/Nareen20
+
 ->Gowrav – Frontend Development (UI/UX),Chatbot Development
+
+---GitHub:https://github.com/Gowrav19
+
 
 ->Mokshith – Model Training & Evaluation
 
