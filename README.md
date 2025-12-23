@@ -93,7 +93,11 @@ MediPredictAI/
 ## 👥 Contributors
 
 ->Dhanush – Project Lead, Model Development 
+
 ->Nareen– Frontend Development (UI/UX), Backend Integration  
+
 ->Gowrav – Frontend Development (UI/UX),Chatbot Development
+
 ->Mokshith – Model Training & Evaluation
+
 ->Manoj - Data Collection & Preprocessing
