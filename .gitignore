@@ -1,1 +1,15 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+
+# Logs
 logs/app.log
+*.log
+
+# ML models
+*.pkl
+
+# Environment variables
+.env
