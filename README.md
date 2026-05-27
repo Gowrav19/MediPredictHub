@@ -363,10 +363,3 @@ Your project now includes:
 5. **Present your project** with confidence!
 
 ---
-
-
-
-->Mokshith – Model Training & Evaluation
-
-->Manoj - Data Collection & Preprocessing
->>>>>>> b8cf40494ca1f11ac8dc8445e939f352e62f65c0
